@@ -26,8 +26,8 @@ class RoomsFragment : Fragment(), RoomsContract.View {
         return view
     }
 
-    override fun roomsShow(newsList: ArrayList<HotelRoom>) {
-        val adapter = RoomsListAdapter(newsList)
+    override fun roomsShow(roomsList: ArrayList<HotelRoom>) {
+        val adapter = RoomsListAdapter(roomsList)
         val recyclerView = view!!.findViewById(R.id.recycler) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter

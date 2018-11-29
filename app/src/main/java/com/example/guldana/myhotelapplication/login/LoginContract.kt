@@ -2,10 +2,11 @@ package com.example.guldana.myhotelapplication.login
 
 import com.example.guldana.myhotelapplication.base.BasePresenter
 import com.example.guldana.myhotelapplication.base.BaseView
+import com.google.firebase.auth.FirebaseUser
 
 interface LoginContract {
     interface View : BaseView<Presenter> {
-        fun onLogSuccess()
+        fun onLogSuccess(user: FirebaseUser)
         fun onLogError()
     }
 

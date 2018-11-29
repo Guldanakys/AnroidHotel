@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorFragmentsBack"
-    tools:context=".main.addBooking.AddBookingActivity">
+    tools:context=".main.bookings.AddBookingActivity">
 
     <TextView
         android:id="@+id/txt_add_booking_title"

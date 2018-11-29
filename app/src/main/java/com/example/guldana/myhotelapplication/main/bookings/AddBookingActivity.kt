@@ -1,4 +1,4 @@
-package com.example.guldana.myhotelapplication.main.addBooking
+package com.example.guldana.myhotelapplication.main.bookings
 
 import android.app.Activity
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.example.guldana.myhotelapplication.models.Booking
 import com.example.guldana.myhotelapplication.models.HotelRoom
+import com.example.guldana.myhotelapplication.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_add_booking.*
@@ -18,8 +19,7 @@ class AddBookingActivity : AppCompatActivity() {
 
     lateinit var refRooms: DatabaseReference
     lateinit var refBookings: DatabaseReference
-    val mDatabaseUsers = FirebaseDatabase.getInstance()
-    val mAuth = FirebaseAuth.getInstance()
+    lateinit var refUsers: DatabaseReference
     lateinit var username: String
     lateinit var roomtitle: String
     lateinit var bDay: String
@@ -30,23 +30,28 @@ class AddBookingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_booking)
 
-        roomtitle = "Not working((("
+        refUsers = FirebaseDatabase.getInstance().getReference("users")
+        refUsers.addValueEventListener(object: ValueEventListener {
 
-        val mDatabaseReference = mDatabaseUsers.reference.child("users")
-        val mUser = mAuth!!.currentUser
-        val mUserReference = mDatabaseReference.child(mUser!!.uid)
-
-        mUserReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //username = snapshot.child("name").value as String
-                username = "Gul"
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented")
             }
-            override fun onCancelled(databaseError: DatabaseError) {
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if(p0.exists()){
+                    for(u in p0.children){
+                        val user = u.getValue(User::class.java)
+                        if(user!!.name == intent.getStringExtra("userId")) {
+                            username = user.name
+                        }
+                    }
+                }
+
             }
         })
 
-        val myOptions = ArrayList<String>()
 
+        val myOptions = ArrayList<String>()
         refRooms = FirebaseDatabase.getInstance().getReference("rooms")
         refRooms.addValueEventListener(object: ValueEventListener {
 
@@ -89,6 +94,7 @@ class AddBookingActivity : AppCompatActivity() {
         }
 
         btn_save_booking.setOnClickListener {
+            username = "Ann"
             val booking = Booking("1", username, roomtitle, bDay, bMonth, bYear)
             saveBooking(booking)
             val result = Intent()

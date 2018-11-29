@@ -9,10 +9,15 @@ class LoginPresenter(override var view: LoginContract.View?) :
 
     override fun login(email: String, password: String) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful)
-                    view?.onLogSuccess()
+            if (it.isSuccessful) {
+                val currentUser = mAuth.currentUser
+                if (currentUser != null)
+                    view?.onLogSuccess(currentUser)
                 else
                     view?.onLogError()
+            } else {
+                view?.onLogError()
+            }
         }
     }
 }

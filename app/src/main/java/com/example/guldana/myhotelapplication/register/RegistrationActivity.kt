@@ -4,8 +4,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.example.guldana.myhotelapplication.main.MainActivity
 import com.example.guldana.myhotelapplication.R
+import com.example.guldana.myhotelapplication.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_registration.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -38,8 +38,8 @@ class RegistrationActivity : AppCompatActivity(), RegistrationContract.View {
 
 
     override fun onRegisterSuccess() {
-        startActivity(Intent(this, MainActivity::class.java))
-        Toast.makeText(this, "Successfully signed in!", Toast.LENGTH_LONG).show()
+        startActivity(Intent(this, LoginActivity::class.java))
+        Toast.makeText(this, "User created successfully!", Toast.LENGTH_LONG).show()
         finish()
     }
 

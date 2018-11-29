@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.guldana.myhotelapplication.main.MainActivity
 import com.example.guldana.myhotelapplication.R
 import com.example.guldana.myhotelapplication.register.RegistrationActivity
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -14,6 +15,8 @@ import org.koin.core.parameter.parametersOf
 class LoginActivity : AppCompatActivity(), LoginContract.View  {
 
     override val presenter: LoginContract.Presenter by inject { parametersOf(this) }
+
+    var currentUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +37,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.View  {
         }
     }
 
-    override fun onLogSuccess() {
-        startActivity(Intent(this, MainActivity::class.java))
-        Toast.makeText(this, "Successfully logged in!", Toast.LENGTH_LONG).show()
+    override fun onLogSuccess(user: FirebaseUser) {
+        currentUser = user
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userId", user.uid)
+        startActivity(intent)
         finish()
     }
 

@@ -2,6 +2,8 @@ package com.example.guldana.myhotelapplication.di
 
 import com.example.guldana.myhotelapplication.login.LoginContract
 import com.example.guldana.myhotelapplication.login.LoginPresenter
+import com.example.guldana.myhotelapplication.main.bookings.BookingsContract
+import com.example.guldana.myhotelapplication.main.bookings.BookingsPresenter
 import com.example.guldana.myhotelapplication.main.hotelRooms.RoomsContract
 import com.example.guldana.myhotelapplication.main.hotelRooms.RoomsPresenter
 import com.example.guldana.myhotelapplication.main.news.NewsContract
@@ -16,6 +18,7 @@ val appModule = module {
     factory { (view: RegistrationContract.View) -> RegistrationPresenter(view) as RegistrationContract.Presenter }
     factory { (view: NewsContract.View) -> NewsPresenter(view) as NewsContract.Presenter }
     factory { (view: RoomsContract.View) -> RoomsPresenter(view) as RoomsContract.Presenter }
+    factory { (view: BookingsContract.View) -> BookingsPresenter(view) as BookingsContract.Presenter }
 }
 
 val hotelApp = listOf(appModule)

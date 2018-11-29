@@ -6,7 +6,7 @@ import com.example.guldana.myhotelapplication.models.HotelRoom
 
 interface RoomsContract {
     interface View : BaseView<Presenter> {
-        fun roomsShow(newsList: ArrayList<HotelRoom>)
+        fun roomsShow(roomsList: ArrayList<HotelRoom>)
     }
 
     interface Presenter : BasePresenter<View> {
