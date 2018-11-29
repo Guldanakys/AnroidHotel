@@ -1,31 +1,27 @@
 package com.example.guldana.myhotelapplication.main.bookings
 
-
 import com.example.guldana.myhotelapplication.models.Booking
+import com.example.guldana.myhotelapplication.models.HotelRoom
 import com.example.guldana.myhotelapplication.models.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class BookingsPresenter(override var view: BookingsContract.View?) :
-        BookingsContract.Presenter {
+class AddBookingPresenter(override var view: AddBookingContract.View?) :
+        AddBookingContract.Presenter {
 
-    val mDatabaseBookings = FirebaseDatabase.getInstance().getReference("bookings")
+    val mDatabaseRooms = FirebaseDatabase.getInstance().getReference("rooms")
 
     val mDatabaseUsers = FirebaseDatabase.getInstance().getReference("users")
 
+    val mDatabaseBookings = FirebaseDatabase.getInstance().getReference("bookings")
+
     lateinit var userName : String
 
-    lateinit var bDay: String
+    override fun loadForm(userId: String) {
 
-    lateinit var bMonth: String
-
-    lateinit var bYear: String
-
-    override fun loadBookings(userId: String) {
-
-        mDatabaseUsers.addValueEventListener(object: ValueEventListener{
+        mDatabaseUsers.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 TODO("not implemented")
             }
@@ -43,26 +39,31 @@ class BookingsPresenter(override var view: BookingsContract.View?) :
 
         })
 
-        val bookingsList = ArrayList<Booking>()
-        mDatabaseBookings.addValueEventListener(object: ValueEventListener {
+        val myOptions = ArrayList<String>()
+        mDatabaseRooms.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented")
+
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                bookingsList.clear()
                 if(p0.exists()){
-                    for(b in p0.children){
-                        val booking = b.getValue(Booking::class.java)
-                        if(userName == booking!!.userName) {
-                            bookingsList.add(booking)
-                        }
+                    for(n in p0.children){
+                        val hotelRoom = n.getValue(HotelRoom::class.java)
+                        myOptions.add(hotelRoom!!.title)
                     }
                 }
-                view?.bookingsShow(bookingsList)
+                view?.spinnerShow(myOptions)
             }
+
         })
 
+    }
+
+    override fun saveBooking(day: String, month: String, year: String, room: String) {
+        val booking = Booking("1", userName, room, day, month, year)
+        val bId = mDatabaseBookings.push().key!!
+        booking.id = bId
+        mDatabaseBookings.child(bId).setValue(booking)
     }
 
 }

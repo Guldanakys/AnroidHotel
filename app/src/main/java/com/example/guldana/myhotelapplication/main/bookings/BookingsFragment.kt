@@ -52,6 +52,7 @@ class BookingsFragment : Fragment(), BookingsContract.View {
         val intent = Intent(activity, AddBookingActivity::class.java)
         intent.putExtra("userId", userId)
         startActivityForResult(intent, ADD_TASK_REQUEST)
+        //startActivity(intent)
         Toast.makeText(activity, userId, Toast.LENGTH_LONG).show()
     }
 
